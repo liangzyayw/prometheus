@@ -7,7 +7,7 @@ prometheus监控平台
 kubectl create -f namespace.yaml
 ```
 ## 部署服务
-`行每个目录里面的yaml文件`
+`执行每个目录里面的yaml文件`
 ```
 kubectl create -f ./kube-state-metrics
 kubectl create -f ./node-exporter
