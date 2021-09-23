@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: node-exporter
+  namespace: monitoring
+spec:
+  rules:
+  - host:  node115.liangzy.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: node-exporter
+          servicePort: 9100

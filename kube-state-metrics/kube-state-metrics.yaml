@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-state-metrics
+  namespace: monitoring
+  labels:
+    app: kube-state-metrics
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/http-probe: 'true'
+    prometheus.io/http-probe-path: '/healthz'
+    prometheus.io/http-probe-port: '8080'
+spec:
+  selector:
+    app: kube-state-metrics
+  ports:
+  - name: kube-state-metrics
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+   
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-state-metrics
+  namespace: monitoring
+  labels:
+    app: kube-state-metrics
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kube-state-metrics
+  template:
+    metadata:
+      labels:
+        app: kube-state-metrics
+    spec:
+      serviceAccountName: kube-state-metrics
+      containers:
+      - name: kube-state-metrics
+        image: quay.mirrors.ustc.edu.cn/coreos/kube-state-metrics:v1.8.0                # kube-state-metrics:v1.9.7 适用于Kubernetes 1.16以上版本
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+        kubernetes.io/hostname: "k8s-master"
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule

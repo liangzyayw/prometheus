@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-config
+  namespace: monitoring
+data:
+  config.yml: |-
+    global:
+      resolve_timeout: 5m
+      smtp_smarthost: 'smtp.163.com:465'
+      smtp_from: 'liangzyayw@163.com'
+      smtp_auth_username: 'liangzyayw@163.com'
+      smtp_auth_password:  'JQTVOPJXXSBPGTMM'
+      smtp_require_tls: false
+
+    templates:
+    - '/etc/templates/*.tmpl'
+    route:
+      receiver: 'default'
+      group_wait: 10s
+      group_interval: 1m
+      repeat_interval: 1h
+      group_by: ['alertname', 'instance', 'cluster', 'service']
+      routes:
+      - receiver: 'default'
+        match:
+          severity: 'warning'
+      - receiver: 'dingtalk'
+        match:
+          severity: 'critical'
+    inhibit_rules:
+    - source_match:
+        severity: 'critical'
+      target_match:
+        severity: 'warning'
+      equal: ['alertname', 'instance', 'cluster', 'service']
+    receivers:
+    - name: 'default'
+      email_configs:
+      - to: 'liangzyayw@163.com'
+        send_resolved: true
+    - name: 'dingtalk'
+      webhook_configs:
+      - url: 'http://dingtalk.52liangzy.top/dingtalk/webhook/send'
+        send_resolved: true
