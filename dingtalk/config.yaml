@@ -7,6 +7,6 @@ data:
   config.yml: |-
     targets:
       webhook:
-        url: https://oapi.dingtalk.com/robot/send?access_token=6d0b8e4400c90860becb0637e20c3d06e47ccb1813226d8b653b3110d7fc00cb
+        url: https://oapi.dingtalk.com/robot/send?access_token=钉钉机器人ID
         mention:
           all: true             #@所有人
