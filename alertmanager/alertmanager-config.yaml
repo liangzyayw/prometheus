@@ -8,9 +8,9 @@ data:
     global:
       resolve_timeout: 5m
       smtp_smarthost: 'smtp.163.com:465'
-      smtp_from: 'liangzyayw@163.com'
-      smtp_auth_username: 'liangzyayw@163.com'
-      smtp_auth_password:  'JQTVOPJXXSBPGTMM'
+      smtp_from: '邮箱'
+      smtp_auth_username: '邮箱'
+      smtp_auth_password:  '邮箱授权码'
       smtp_require_tls: false
 
     templates:
@@ -37,7 +37,7 @@ data:
     receivers:
     - name: 'default'
       email_configs:
-      - to: 'liangzyayw@163.com'
+      - to: '邮箱'
         send_resolved: true
     - name: 'dingtalk'
       webhook_configs:
